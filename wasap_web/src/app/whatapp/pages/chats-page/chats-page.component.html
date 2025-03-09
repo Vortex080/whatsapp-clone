@@ -1,0 +1,8 @@
+<div class="flex flex-wrap ">
+    <div class="flex-shrink-0 hidden w-1/5 lg:block">
+        <whatapp-list *ngIf="chats.length > 0" [chats]="chats" [mensaje]="mensa"></whatapp-list>
+    </div>
+    <div class="flex-grow">
+        <whatsapp-chat></whatsapp-chat>
+    </div>
+</div>

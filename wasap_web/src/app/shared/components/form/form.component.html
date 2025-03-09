@@ -1,0 +1,56 @@
+<div *ngIf="errorMessage" role="alert" class="mt-4 alert alert-error">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 stroke-current shrink-0" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <div class="error-message">
+        <p>{{ errorMessage }}</p>
+    </div>
+</div>
+
+
+
+<form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+    <div class="form-control">
+        <label class="label" for="email">
+            <span class="label-text">Email:</span>
+        </label>
+        <input id="email" type="email" formControlName="email" class="input input-bordered" placeholder="Email">
+        <div *ngIf="submitted && f['email'].errors">
+            <small *ngIf="f['email'].errors['required']">El email es obligatorio.</small>
+            <small *ngIf="f['email'].errors['email']">El email no es válido.</small>
+        </div>
+    </div>
+
+    <div class="form-control">
+        <label class="label" for="name">
+            <span class="label-text">Usuario:</span>
+        </label>
+        <input id="name" type="text" formControlName="name" class="input input-bordered" placeholder="Usuario">
+        <div *ngIf="submitted && f['name'].errors">
+            <small *ngIf="f['name'].errors['required']">El usuario es obligatorio.</small>
+        </div>
+    </div>
+
+
+    <div class="form-control">
+        <label class="label" for="pass">
+            <span class="label-text">Contraseña:</span>
+        </label>
+        <input id="pass" type="password" formControlName="pass" class="input input-bordered" placeholder="Contraseña">
+        <div *ngIf="submitted && f['pass'].errors">
+            <small *ngIf="f['pass'].errors['required']">La contraseña es obligatoria.</small>
+            <small *ngIf="f['pass'].errors['minlength']">La contraseña debe tener al menos 6 caracteres.</small>
+        </div>
+    </div>
+
+    <div class="mt-6 form-control">
+        <button class="btn btn-primary" type="submit">Registrar</button>
+        <button class="mt-5 btn btn-secondary" [routerLink]="['/']">Login</button>
+    </div>
+
+
+
+
+
+</form>
