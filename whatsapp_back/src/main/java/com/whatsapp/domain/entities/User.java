@@ -37,12 +37,6 @@ public class User {
 	/** The photo. */
 	@Column(nullable = false)
 	private String photo;
-
-	/** The chats. */
-	@ManyToMany(mappedBy = "users")
-	@JsonIgnore
-	private List<Chat> chats;
-
 	/**
 	 * Instantiates a new user.
 	 */
@@ -83,18 +77,6 @@ public class User {
 		this.photo = photo;
 	}
 
-	/**
-	 * Gets the chats.
-	 *
-	 * @return the chats
-	 */
-	public List<Chat> getChats() {
-		return chats;
-	}
-
-	public void setChats(List<Chat> chats) {
-		this.chats = chats;
-	}
 
 	/**
 	 * Gets the id.

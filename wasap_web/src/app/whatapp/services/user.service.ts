@@ -12,7 +12,17 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   getUsersById(id: number): Observable<User[]> {
-    const url = `${this.baseUrl}/users/${id}`;
+    const url = `${this.baseUrl}users/${id}`;
+    return this.http.get<User[]>(url);
+  }
+
+  getUsersByCorreo(correo: string): Observable<User> {
+    const url = `${this.baseUrl}users/email/${correo}`;
+    return this.http.get<User>(url);
+  }
+
+  getUsers(): Observable<User[]> {
+    const url = `${this.baseUrl}users`;
     return this.http.get<User[]>(url);
   }
 

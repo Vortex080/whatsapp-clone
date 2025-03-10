@@ -16,7 +16,7 @@ public class MessageDTO {
 	private String date;
 
 	/** The chat id. */
-	private Long chatId;
+	private Long dest;
 
 	/**
 	 * Instantiates a new message DTO.
@@ -26,21 +26,21 @@ public class MessageDTO {
 	}
 
 	/**
-	 * Gets the chat id.
+	 * Gets the dest.
 	 *
-	 * @return the chat id
+	 * @return the dest
 	 */
-	public Long getChatId() {
-		return chatId;
+	public Long getDest() {
+		return dest;
 	}
 
 	/**
-	 * Sets the chat id.
+	 * Sets the dest.
 	 *
-	 * @param chatId the new chat id
+	 * @param dest the new dest
 	 */
-	public void setChatId(Long chatId) {
-		this.chatId = chatId;
+	public void setDest(Long dest) {
+		this.dest = dest;
 	}
 
 	/**

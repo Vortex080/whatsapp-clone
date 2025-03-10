@@ -34,8 +34,7 @@ export class HomePageComponent {
       this.loginservice.registrarUsuario(usuarioData).subscribe(
         response => {
           this.router.navigate(['/whatsapp/chats']);
-          this.chatService.email = usuarioData.email.replace(/"/g, '');
-          sessionStorage.setItem('user', JSON.stringify(usuarioData.email));
+          sessionStorage.setItem('user', JSON.stringify(usuarioData.email.replace(/"/g, '')));
         },
         error => {
           if (error.status === 401) {

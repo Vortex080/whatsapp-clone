@@ -1,8 +1,12 @@
 <div class="flex flex-wrap ">
     <div class="flex-shrink-0 hidden w-1/5 lg:block">
-        <whatapp-list *ngIf="chats.length > 0" [chats]="chats" [mensaje]="mensa"></whatapp-list>
+        <div>
+            <whatapp-list *ngIf="chats" [chats]="chats()" [ownuser]="ownuser()"
+                (chatSelected)="selectedChat($event)"></whatapp-list>
+        </div>
     </div>
     <div class="flex-grow">
-        <whatsapp-chat></whatsapp-chat>
+        <whatsapp-chat *ngIf="chatselected != null" [chatselectedInput]="chatid()"
+            [ownuser]="ownuser()" [chatmessagesInput]="chatMessages()"></whatsapp-chat>
     </div>
 </div>

@@ -49,7 +49,6 @@ public class UserDAO {
 	 */
 	public User findByEmail(String email) {
 		TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
-		System.out.println("Buscando usuario con email: " + email); // DEBUG
 		query.setParameter("email", email);
 		List<User> results = query.getResultList();
 		return results.isEmpty() ? null : results.get(0);

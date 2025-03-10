@@ -1,4 +1,5 @@
 export interface ChatDTO {
+    id:       number;
     users:    number[];
     messages: Message[];
 }

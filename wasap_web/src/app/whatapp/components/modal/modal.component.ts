@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'whatsapp-modal',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.css',
 })
-export class ModalComponent { }
+export class ModalComponent {
+
+
+}

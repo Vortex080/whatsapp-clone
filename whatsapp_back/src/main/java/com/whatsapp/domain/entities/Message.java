@@ -10,6 +10,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Message.
+ */
 @Entity
 @Table(name = "Message")
 public class Message {
@@ -31,9 +35,7 @@ public class Message {
 	private LocalDateTime date;
 
 	/** The chat. */
-	@ManyToOne
-	@JoinColumn(name = "chat_id", nullable = true)
-	private Chat chat;
+	private Long destino;
 
 	/**
 	 * Instantiates a new message.
@@ -72,16 +74,21 @@ public class Message {
 	}
 
 	/**
-	 * Gets the chat.
+	 * Gets the destino.
 	 *
-	 * @return the chat
+	 * @return the destino
 	 */
-	public Chat getChat() {
-		return chat;
+	public Long getDestino() {
+		return destino;
 	}
 
-	public void setChat(Chat chat) {
-		this.chat = chat;
+	/**
+	 * Sets the destino.
+	 *
+	 * @param destino the new destino
+	 */
+	public void setDestino(Long destino) {
+		this.destino = destino;
 	}
 
 	/**

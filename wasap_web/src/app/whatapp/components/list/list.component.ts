@@ -1,6 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, Input, output } from '@angular/core';
 import { ModalComponent } from "../modal/modal.component";
 import { ChatDTO } from '../../interfaces/MessageDTO';
+import { User } from '../../../shared/interface/user';
+import { UserService } from '../../services/user.service';
 
 
 @Component({
@@ -10,16 +12,36 @@ import { ChatDTO } from '../../interfaces/MessageDTO';
   styleUrls: ['./list.component.css']
 })
 export class ListComponent {
-  @Input() chats: ChatDTO[] = [];
-  @Input() mensaje: string = '';
+  chats = input<ChatDTO[]>();
+  mensaje = input<string>();
+  chatSelected = output<number>();
+  users: User[] = [];
+  ownuser = input<User>();
 
-  constructor() {
+  constructor(private userService: UserService) {
+    this.userService.getUsers().subscribe({
+      next: (response) => {
+        this.users = response;
+      },
+      error: (error) => {
+        console.error('Error fetching chats:', error);
+      },
+    });
+
+
   }
+
 
 
 
   print() {
     console.log('List component:', this.chats);
+  }
+
+
+  enviarPadre(id: number) {
+    console.log(id);
+    this.chatSelected.emit(id);
   }
 }
 

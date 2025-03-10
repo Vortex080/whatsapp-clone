@@ -2,10 +2,11 @@ package com.whatsapp.infrastructure.controllers;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.whatsapp.domain.dto.MessageDTO;
 import com.whatsapp.domain.entities.Message;
-import com.whatsapp.infrastructure.repositories.ChatDAO;
 import com.whatsapp.infrastructure.repositories.MessageDAO;
 import com.whatsapp.infrastructure.repositories.UserDAO;
 
@@ -30,8 +31,6 @@ public class MessageRest {
 	private MessageDAO messageDAO;
 	@Inject
 	private UserDAO userDAO;
-	@Inject
-	private ChatDAO chatDAO;
 
 	/**
 	 * Creates the message.
@@ -41,8 +40,7 @@ public class MessageRest {
 	 */
 	@POST
 	public Response createMessage(MessageDTO message) {
-		if (message.getIdAuthor() == null || message.getText() == null || message.getDate() == null
-				|| message.getChatId() == null) {
+		if (message.getIdAuthor() == null || message.getText() == null || message.getDate() == null) {
 			return Response.status(Response.Status.BAD_REQUEST)
 					.entity("El autor, la fecha y el mensaje son obligatorios").build();
 		}
@@ -52,12 +50,11 @@ public class MessageRest {
 		newMessage.setText(message.getText());
 		newMessage.setAuthor(userDAO.findById(message.getIdAuthor()));
 		newMessage.setDate(LocalDateTime.now());
-		newMessage.setChat(chatDAO.find(message.getChatId()));
+		newMessage.setDestino(message.getDest());
 
 		messageDAO.save(newMessage);
 		return Response.status(Response.Status.CREATED).entity(message).build();
 	}
-
 
 	/**
 	 * Gets the message.
@@ -73,19 +70,66 @@ public class MessageRest {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		MessageDTO messageDTO = new MessageDTO();
-		
-		messageDTO.setChatId(message.getId());
+
+		messageDTO.setDest(message.getDestino());
 		messageDTO.setIdAuthor(message.getAuthor().getId());
 		messageDTO.setText(message.getText());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 		messageDTO.setDate(message.getDate().format(formatter));
-		
-		
+
 		return Response.ok(messageDTO).build();
 	}
 
+	/**
+	 * Gets the message.
+	 *
+	 * @param id the id
+	 * @return the message
+	 */
+	@GET
+	@Path("/conversation/{ids}")
+	public Response getMessage(@PathParam("ids") String ids) {
 
-	
+	    String[] parts = ids.split(",");
+	    if(parts.length != 2){
+	        return Response.status(Response.Status.BAD_REQUEST)
+	                .entity("Deben proporcionarse exactamente 2 IDs separados por coma.").build();
+	    }
+
+	    Long id1;
+	    Long id2;
+
+	    try {
+	        id1 = Long.parseLong(parts[0]);
+	        id2 = Long.parseLong(parts[1]);
+	    } catch(NumberFormatException ex){
+	        return Response.status(Response.Status.BAD_REQUEST)
+	                .entity("IDs inválidos, deben ser numéricos.").build();
+	    }
+
+	    List<Message> messages = messageDAO.findByUsers(id1, id2);
+	    if (messages == null || messages.isEmpty()) {
+	        return Response.status(Response.Status.NOT_FOUND).build();
+	    }
+
+	    List<MessageDTO> listMessageDTO = new ArrayList<>();
+
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
+	    for (Message msg : messages) {
+	        MessageDTO messageDTO = new MessageDTO();
+	        messageDTO.setDest(msg.getDestino());
+	        messageDTO.setIdAuthor(msg.getAuthor().getId());
+	        messageDTO.setText(msg.getText());
+	        messageDTO.setDate(msg.getDate().format(formatter));
+
+	        listMessageDTO.add(messageDTO);
+	    }
+
+	    return Response.ok(listMessageDTO).build();
+	}
+
+
 	/**
 	 * Delete message.
 	 *
